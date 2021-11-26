@@ -5,7 +5,6 @@ bool m_showBookRead;
 bool m_showBookSkill;
 bool m_showKnownEnchantment;
 bool m_showPosNegEffects;
-static TESGlobal *g_survivalModeEnabled = NULL;
 
 double CAHZScaleform::mRound(double r)
 {
@@ -84,34 +83,18 @@ void CAHZScaleform::ExtendItemCard(GFxMovieView * view, GFxValue * object, Inven
 				UInt32 effectCount = alchItem->effectItemList.count;
 				UInt32 negEffects = 0;
 				UInt32 posEffects = 0;
-				bool survivalMode = isSurvivalMode();
 
 				for (int i = 0; i < effectCount; i++)
 				{
 					if (alchItem->effectItemList[i]->mgef)
 					{
-						string effectName = string(alchItem->effectItemList[i]->mgef->description.c_str());
-						size_t found = effectName.find("[SURV=");
-						bool surVivalDescFound = (found != string::npos);
-
 						if (((alchItem->effectItemList[i]->mgef->properties.flags & EffectSetting::Properties::kEffectType_Detrimental) == EffectSetting::Properties::kEffectType_Detrimental) ||
 							((alchItem->effectItemList[i]->mgef->properties.flags & EffectSetting::Properties::kEffectType_Hostile) == EffectSetting::Properties::kEffectType_Hostile))
 						{
-
-							// Do not include the survival mode effects when not in survival mode
-							if (!survivalMode && surVivalDescFound)
-							{
-								continue;
-							}
 							negEffects++;
 						}
 						else
 						{
-							// Do not include the survival mode effects when not in survival mode
-							if (!survivalMode && surVivalDescFound)
-							{
-								continue;
-							}
 							posEffects++;
 						}
 					}
@@ -140,28 +123,6 @@ void CAHZScaleform::ExtendItemCard(GFxMovieView * view, GFxValue * object, Inven
 	RegisterBoolean(object, "AHZdbmDisp", papyrusMoreHudIE::HasForm("dbmDisp", item->type->formID));
 	RegisterBoolean(object, "AHZdbmFound", papyrusMoreHudIE::HasForm("dbmFound", item->type->formID));
 
-}
-
-bool CAHZScaleform::isSurvivalMode()
-{
-	if (!g_survivalModeEnabled)
-	{
-		tArray<TESForm*> temp = DataHandler::GetSingleton()->arrGLOB;
-		for (int i = 0; i < temp.count; i++)
-		{
-			TESGlobal *glob = DYNAMIC_CAST(temp[i], TESForm, TESGlobal);
-			if (glob) {
-				string globName(glob->unk20.Get());
-				if (globName == "Survival_ModeToggle")
-				{
-					g_survivalModeEnabled = glob;
-					break;
-				}
-			}
-		}
-	}
-
-	return (g_survivalModeEnabled && g_survivalModeEnabled->unk34);
 }
 
 void CAHZScaleform::Initialize()

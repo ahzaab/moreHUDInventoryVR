@@ -185,7 +185,7 @@ extern "C"
 {
 	bool SKSEPlugin_Query(const SKSEInterface * skse, PluginInfo * info)
 	{
-		string logPath = "\\My Games\\Skyrim Special Edition\\SKSE\\";
+		string logPath = "\\My Games\\Skyrim VR\\SKSE\\";
 		logPath.append(PLUGIN_NAME);
 		logPath.append(".log");
 
@@ -207,13 +207,13 @@ extern "C"
 
 			return false;
 		}
-		else if (skse->runtimeVersion < (MAKE_EXE_VERSION(1, 5, 97)))
+		else if (skse->runtimeVersion < (MAKE_EXE_VR_VERSION(1, 4, 15)))
 		{
 			_ERROR("unsupported runtime version %08X", skse->runtimeVersion);
 
 			return false;
 		}
-		else if (SKSE_VERSION_RELEASEIDX < 53)
+		else if (SKSE_VERSION_RELEASEIDX < 59)
 		{
 			_ERROR("unsupported skse release index %08X", SKSE_VERSION_RELEASEIDX);
 

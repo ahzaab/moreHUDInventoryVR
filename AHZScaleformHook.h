@@ -13,7 +13,6 @@ using namespace std;
 extern string g_currentMenu;
 
 class AHZEventHandler : public BSTEventSink <MenuOpenCloseEvent> {
-
    EventResult ReceiveEvent(MenuOpenCloseEvent * evn, EventDispatcher<MenuOpenCloseEvent> * dispatcher);
 };
 
