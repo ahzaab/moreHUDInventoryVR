@@ -113,7 +113,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>RUNTIME;PLUGIN_VERSION=(10017);RUNTIME_VERSION=0x01050610;_DEBUG;_WINDOWS;_USRDLL;PLUGIN_EXAMPLE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PLUGIN_VERSION=(10018);RUNTIME_VERSION=0x010400F1;RUNTIME;IS_VR;_DEBUG;_WINDOWS;_USRDLL;PLUGIN_EXAMPLE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
@@ -208,6 +208,7 @@
     <ClCompile Include="..\skse64\GameThreads.cpp" />
     <ClCompile Include="..\skse64\GameTypes.cpp" />
     <ClCompile Include="..\skse64\GameUtilities.cpp" />
+    <ClCompile Include="..\skse64\GameVR.cpp" />
     <ClCompile Include="..\skse64\GlobalLocks.cpp" />
     <ClCompile Include="..\skse64\HashUtil.cpp" />
     <ClCompile Include="..\skse64\Hooks_Camera.cpp" />
@@ -229,8 +230,8 @@
     <ClCompile Include="..\skse64\InputMap.cpp" />
     <ClCompile Include="..\skse64\InternalSerialization.cpp" />
     <ClCompile Include="..\skse64\InternalTasks.cpp" />
+    <ClCompile Include="..\skse64\InternalVR.cpp" />
     <ClCompile Include="..\skse64\NiAdditionalGeometryData.cpp" />
-    <ClCompile Include="..\skse64\NiAllocator.cpp" />
     <ClCompile Include="..\skse64\NiControllers.cpp" />
     <ClCompile Include="..\skse64\NiExtraData.cpp" />
     <ClCompile Include="..\skse64\NiGeometry.cpp" />

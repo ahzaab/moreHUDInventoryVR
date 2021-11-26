@@ -1,5 +1,5 @@
 #include "skse64/PluginAPI.h"
-#include "skse64/skse64_common/skse_version.h"
+#include "sksevr/skse64_common/skse_version.h"
 #include "AHZScaleform.h"
 #include "AHZScaleformHook.h"
 #include <shlobj.h>
