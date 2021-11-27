@@ -7,14 +7,14 @@
 try{
 
 
-$pluginExtesion = '.esl' 
+$pluginExtesion = '.esp' 
 
 $executingPath = split-path $SCRIPT:MyInvocation.MyCommand.Path -parent
 
-$sourceDir = "$($Env:Skyrim64Path)"
+$sourceDir = "$($Env:SkyrimVRPath)"
 $archiveToolDir = "$sourceDir\Tools\Archive"
 $sourceDataDir = "$sourceDir\Data"
-$releaseDir = "$($Env:ModDevPath)\MODS\SkyrimSE\moreHUDInventory\Release"
+$releaseDir = "$($Env:ModDevPath)\MODS\SkyrimVR\moreHUDInventory\Release"
 $versionDir = "$releaseDir\$Version"
 $tempDir = "$versionDir\.tmp"
 $destDataDir = "$versionDir\Data"

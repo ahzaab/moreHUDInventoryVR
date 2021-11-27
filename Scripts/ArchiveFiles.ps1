@@ -1,6 +1,6 @@
-﻿$sourcePath = "$($Env:Skyrim64Path)\Data"
-$destinationDataPath = "$($Env:ModDevPath)\MODS\SkyrimSE\moreHUDInventory\SKSE64\skse64\moreHUDInventory\Data"
-$destinationAS2Path = "$($Env:ModDevPath)\MODS\SkyrimSE\moreHUDInventory\SKSE64\skse64\moreHUDInventory\AS2"
+﻿$sourcePath = "$($Env:SkyrimVRPath)\Data"
+$destinationDataPath = "$($Env:ModDevPath)\MODS\SkyrimVR\moreHUDInventory\SKSE64\sksevr\moreHUDInventory\Data"
+$destinationAS2Path = "$($Env:ModDevPath)\MODS\SkyrimVR\moreHUDInventory\SKSE64\sksevr\moreHUDInventory\AS2"
 
 if (!$(Test-Path "$destinationDataPath\Interface"))
 {
@@ -10,8 +10,7 @@ if (!$(Test-Path "$destinationDataPath\Interface"))
 
 Copy-Item "$sourcePath\Source\Scripts\ahzMoreHudIE.psc" -Destination "$destinationDataPath\Source\Scripts"
 Copy-Item "$sourcePath\Scripts\ahzMoreHudIE.pex" -Destination "$destinationDataPath\Scripts"
-Copy-Item "$sourcePath\AHZmoreHUDInventory.esl" -Destination "$destinationDataPath"
-Copy-Item "$sourcePath\AHZmoreHUDInventory.esl" -Destination "$destinationDataPath"
+Copy-Item "$sourcePath\AHZmoreHUDInventory.esp" -Destination "$destinationDataPath"
 Copy-Item "$sourcePath\Interface\AHZmoreHUDInventory.swf" -Destination "$destinationDataPath\Interface"
 
 if ($(Test-Path "$sourcePath\Interface\exported\moreHUDIE"))

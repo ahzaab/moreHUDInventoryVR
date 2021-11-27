@@ -25,6 +25,10 @@ sSWFPath='moreHUDIE/baseLargeItemCard.swf'
 fAlpha=60
 ; Set to true for debugging, adds a border around all textfields
 bDebugDrawBorders = false
+; For VR, we add to the SkyUI x position of the item card so it does not overlap.  The default is 60.
+fParentXOffset = 60
+; The crafting menu handles the item card differently.  The default is 0
+fCraftingCardParentXOffset = 0
 
 [Icons]
 sSWFPath='moreHUDIE/baseIcons.swf'
