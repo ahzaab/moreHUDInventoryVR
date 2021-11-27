@@ -29,7 +29,7 @@ private:
    static void RegisterBoolean(GFxValue * dst, const char * name, bool value);
    static double mRound(double d);
    string GetBookSkill(TESForm *form);
-   bool GetIsKnownEnchantment(InventoryEntryData * item);
+   UInt32 CAHZScaleform::GetIsKnownEnchantment(InventoryEntryData* item);
 
    bool m_showBookSkill;
    bool m_showKnownEnchantment;

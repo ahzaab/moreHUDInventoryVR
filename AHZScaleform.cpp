@@ -32,9 +32,9 @@ void CAHZScaleform::ExtendItemCard(GFxMovieView * view, GFxValue * object, Inven
 	GFxValue obj;
 	view->CreateObject(&obj);
 
-	if (item->type->GetFormType() == kFormType_Armor || item->type->GetFormType() == kFormType_Weapon && m_showKnownEnchantment)
+	if ((item->type->GetFormType() == kFormType_Armor || item->type->GetFormType() == kFormType_Weapon) && m_showKnownEnchantment)
 	{
-		RegisterBoolean(&obj, "enchantmentKnown", GetIsKnownEnchantment(item));
+		RegisterNumber(&obj, "enchantmentKnown", GetIsKnownEnchantment(item));
 		// Add the object to the scaleform function
 		object->SetMember("AHZItemCardObj", &obj);
 	}
@@ -188,63 +188,95 @@ string CAHZScaleform::GetBookSkill(TESForm * form)
    return desc;
 }
 
-bool CAHZScaleform::GetIsKnownEnchantment(InventoryEntryData * item)
+bool MagicDisallowEnchanting(BGSKeywordForm* pKeywords)
 {
-   bool enchantmentKnown = false;
+	if (pKeywords)
+	{
+		for (UInt32 k = 0; k < pKeywords->numKeywords; k++) {
+			if (pKeywords->keywords[k]) {
+				string keyWordName = string(pKeywords->keywords[k]->keyword.Get());
+				if (keyWordName == "MagicDisallowEnchanting")
+				{
+					return true;  // Is enchanted, but cannot be enchanted by player
+				}
+			}
+		}
+	}
+	return false;
+}
 
-   if (!item || !item->type)
-   {
-      return false;
-   }
+UInt32 CAHZScaleform::GetIsKnownEnchantment(InventoryEntryData* item)
+{
+	if (!item || !item->type)
+	{
+		return 0;
+	}
 
-   if (item->type->GetFormType() == kFormType_Armor || item->type->GetFormType() == kFormType_Weapon)
-   {
-      EnchantmentItem * enchantment = NULL;
-      TESEnchantableForm * enchantable = DYNAMIC_CAST(item->type, TESForm, TESEnchantableForm);
+	PlayerCharacter* pPC = (*g_thePlayer);
+	TESForm* baseForm = item->type;
+	if (pPC &&
+		(baseForm->GetFormType() == kFormType_Weapon || baseForm->GetFormType() == kFormType_Armor || baseForm->GetFormType() == kFormType_Ammo || baseForm->GetFormType() == kFormType_Projectile))
+	{
+		EnchantmentItem* enchantment = NULL;
+		TESEnchantableForm* enchantable = DYNAMIC_CAST(baseForm, TESForm, TESEnchantableForm);
+		if (baseForm->GetFormType() == kFormType_Projectile)
+			enchantable = DYNAMIC_CAST(baseForm, TESForm, TESEnchantableForm);
 
-      if (enchantable) { // Check the item for a base enchantment
-         enchantment = enchantable->enchantment;
-      }
+		bool wasExtra = false;
+		if (enchantable) { // Check the item for a base enchantment
+			enchantment = enchantable->enchantment;
+		}
 
-      // Check the extra data for enchantments learned by the player
-      if (item->extendDataList && enchantable)
-      {
-         for (ExtendDataList::Iterator it = item->extendDataList->Begin(); !it.End(); ++it)
-         {
-            BaseExtraList * pExtraDataList = it.Get();
+		if (item->extendDataList) {
+			for (auto it = item->extendDataList->Begin(); !it.End(); ++it)
+			{
+				auto xList = it.Get();
+				if (!xList)
+					continue;
+				if (ExtraEnchantment* extraEnchant = static_cast<ExtraEnchantment*>(xList->GetByType(kExtraData_Enchantment)))
+				{
+					wasExtra = true;
+					enchantment = extraEnchant->enchant;
+					break;
+				}
+			}
+		}
 
-            if (pExtraDataList)
-            {
-               if (pExtraDataList->HasType(kExtraData_Enchantment))
-               {
-                  if (ExtraEnchantment* extraEnchant = static_cast<ExtraEnchantment*>(pExtraDataList->GetByType(kExtraData_Enchantment)))
-                  {
-                     enchantment = extraEnchant->enchant;
+		if (enchantment)
+		{
+			if ((enchantment->flags & TESForm::kFlagPlayerKnows) == TESForm::kFlagPlayerKnows) {
+				return MagicDisallowEnchanting(DYNAMIC_CAST(enchantment, EnchantmentItem, BGSKeywordForm)) ? 2 : 1;
+			}
+			else if (MagicDisallowEnchanting(DYNAMIC_CAST(enchantment, EnchantmentItem, BGSKeywordForm)))
+			{
+				return 2;
+			}
 
-                     // For now, assume true since we have extra enchantment
-                     enchantmentKnown = true;
-                  }
-               }
-            }
-         }
-      }
+			EnchantmentItem* baseEnchantment = (EnchantmentItem*)(enchantment->data.baseEnchantment);
+			if (baseEnchantment)
+			{
+				if ((baseEnchantment->flags & TESForm::kFlagPlayerKnows) == TESForm::kFlagPlayerKnows) {
+					return MagicDisallowEnchanting(DYNAMIC_CAST(baseEnchantment, EnchantmentItem, BGSKeywordForm)) ? 2 : 1;
+				}
+				else if (MagicDisallowEnchanting(DYNAMIC_CAST(baseEnchantment, EnchantmentItem, BGSKeywordForm)))
+				{
+					return 2;
+				}
+			}
+		}
 
-      if (enchantment)
-      {
-         if ((enchantment->flags & TESForm::kFlagPlayerKnows) == TESForm::kFlagPlayerKnows) {
-            enchantmentKnown = true;
-         }
+		// Its safe to assume that if it not a base enchanted item, that it was enchanted by the player and therefore, they
+		// know the enchantment
+		if (wasExtra)
+		{
+			return 1;
+		}
+		else if (enchantable) {
+			return MagicDisallowEnchanting(DYNAMIC_CAST(enchantable, TESEnchantableForm, BGSKeywordForm)) ? 2 : 0;
+		}
 
-         if (enchantment->data.baseEnchantment)
-         {
-            if ((enchantment->data.baseEnchantment->flags & TESForm::kFlagPlayerKnows) == TESForm::kFlagPlayerKnows) {
-               enchantmentKnown = true;
-            }
-         }
-      }
-   }
-
-   return enchantmentKnown;
+	}
+	return 0;
 }
 
 void CAHZScaleform::ReplaceStringInPlace(std::string& subject, const std::string& search,
