@@ -26,4 +26,4 @@ if ($(Test-Path "$sourcePath\Interface\exported\moreHUDIE"))
 #AS2
 
 
-Copy-Item "$($Env:ModDevPath)\MODS\SkyrimSE\moreHUDInventory\ScaleForm\src\HUDWidgets\*" -Destination $destinationAS2Path -Exclude .git* -Recurse -Force
+Copy-Item "$($Env:ModDevPath)\MODS\SkyrimVR\moreHUDInventory\ScaleForm\src\HUDWidgets\*" -Destination $destinationAS2Path -Exclude .git* -Recurse -Force

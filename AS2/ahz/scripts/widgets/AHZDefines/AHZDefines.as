@@ -5,12 +5,15 @@
 	static var CFG_LIC_YOFFSET: String = 'fyoffset:largeitemcard';
 	static var CFG_LIC_XSCALE: String = 'fxscale:largeitemcard';
 	static var CFG_LIC_YSCALE: String = 'fyscale:largeitemcard';
-	static var CFG_LIC_PATH: String = 'sswfpath:largeitemcard';	
-    static var CFG_LIC_ALPHA: String = 'falpha:itemcard';
-	static var CFG_LIC_DRAW_BORDERS: String = 'bdebugdrawborders:itemcard';
+	static var CFG_LIC_PATH: String = 'sswfpath:largeitemcard';		
 	static var CFG_LIC_DESCRIPTION_BOTTOMMARGIN: String = 'fdescriptionbottommargin:largeitemcard';
 	static var CFG_LIC_DESCRIPTION_LEFTMARGIN: String = 'fdescriptionleftmargin:largeitemcard';	
 	static var CFG_LIC_DESCRIPTION_RIGHTMARGIN: String = 'fdescriptionrightmargin:largeitemcard';	
+	
+    static var CFG_LIC_ALPHA: String = 'falpha:itemcard';
+	static var CFG_LIC_DRAW_BORDERS: String = 'bdebugdrawborders:itemcard';
+	static var CFG_LIC_PARENT_XOFFSET: String = 'fparentxoffset:itemcard';
+	static var CFG_LIC_CRAFTIING_PARENT_XOFFSET: String = 'fcraftingcardparentxoffset:itemcard';
 	
 	static var CFG_LIC_DESCRIPTION_EXTRADATA_PADDING: String = 'fextradatapadding:largeitemcard';
 	static var CFG_LIC_DESCRIPTION_BOTTOMMARGIN_EXTRA: String = 'fdescriptionbottommarginextra:largeitemcard';
